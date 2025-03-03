@@ -1,0 +1,13 @@
+{
+  "version": "1",
+  "name": "Go Home",
+  "type": "collection",
+  "ignore": [
+    "node_modules",
+    ".git"
+  ],
+  "presets": {
+    "requestType": "http",
+    "requestUrl": "{{BASE_URL}}/api/"
+  }
+}

@@ -1,0 +1,20 @@
+meta {
+  name: Create device
+  type: http
+  seq: 4
+}
+
+post {
+  url: {{BASE_URL}}/api/devices
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "name": "foo2",
+    "description": "foobar",
+    "device_type": "CAMERA",
+    "owned_by": "tyrese"
+  }
+}
