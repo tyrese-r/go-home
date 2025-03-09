@@ -24,8 +24,8 @@ jobs:
         run: go mod tidy
 
       - name: Build Application
-        run: go build -o app_binary ./...
-        
+        run: go build -o app_binary ./cmd/server
+                
       - name: Run Tests
         run: go test -v ./...
 
