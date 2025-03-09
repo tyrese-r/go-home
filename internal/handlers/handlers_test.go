@@ -94,8 +94,8 @@ func (h *TestHandler) triggerDeviceAlarm(c *gin.Context) {
 
 	// Parse request body
 	var alarmRequest models.AlarmRequest
-	if err := c.ShouldBindJSON(&alarmRequest); err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+	if bindErr := c.ShouldBindJSON(&alarmRequest); bindErr != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"bindError": bindErr.Error()})
 		return
 	}
 
