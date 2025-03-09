@@ -1,39 +1,36 @@
-name: Lint and Test
-on:
-  pull_request:
-    branches:
-      - master
+name: Build and Test
 
-permissions:
-  contents: read
+on: 
+  push:
+    branches: [ "master" ]
+  pull_request:
+    branches: [ "master" ]
+  workflow_dispatch: 
 
 jobs:
-  golangci:
-    name: Lint Code
+  build:
+    name: Build & Test
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-go@v5
-        with:
-          go-version: stable
-      - name: golangci-lint
-        uses: golangci/golangci-lint-action@v6
-        with:
-          version: v1.64.5
-  test:
-    name: Run Tests
-    needs: golangci
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
+      - name: Checkout Repository
+        uses: actions/checkout@v4
 
       - name: Set up Go
         uses: actions/setup-go@v4
         with:
-          go-version: '1.23'
+          go-version: '1.21'
 
-      - name: Build
-        run: go build -v ./...
+      - name: Install Dependencies
+        run: go mod tidy
 
-      - name: Test
+      - name: Build Application
+        run: go build -o app_binary ./cmd/server
+                
+      - name: Run Tests
         run: go test -v ./...
+
+      - name: Upload Build Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: app_binary
+          path: app_binary
