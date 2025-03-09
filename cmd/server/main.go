@@ -20,8 +20,8 @@ func main() {
 		log.Fatalf("Failed to connect to database: %v", err)
 	}
 	defer func() {
-		if err := db.Close(); err != nil {
-			log.Printf("Error closing database: %v", err)
+		if clErr := db.Close(); clErr != nil {
+			log.Printf("clError closing database: %v", clErr)
 		}
 	}()
 	// Initialize repositories
