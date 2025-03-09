@@ -1,8 +1,13 @@
 name: Build and Deploy
-on:
+
+on: 
   push:
-    branches:
-      - master
+    branches: [ "master" ]
+
+  pull_request:
+    branches: [ "master" ]
+
+  workflow_dispatch: 
 
 permissions:
   contents: read
