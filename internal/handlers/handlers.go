@@ -2,10 +2,11 @@ package handlers
 
 import (
 	"fmt"
-	"github.com/tyrese-r/go-home/internal/validation"
 	"net/http"
 	"strconv"
 	"time"
+
+	"github.com/tyrese-r/go-home/internal/validation"
 
 	"github.com/gin-gonic/gin"
 	"github.com/tyrese-r/go-home/internal/models"
@@ -132,8 +133,8 @@ func (h *Handler) updateDevice(c *gin.Context) {
 	}
 
 	var deviceUpdate models.DeviceUpdate
-	if err := c.ShouldBindJSON(&deviceUpdate); err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+	if bindErr := c.ShouldBindJSON(&deviceUpdate); bindErr != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": bindErr.Error()})
 		return
 	}
 
@@ -200,8 +201,8 @@ func (h *Handler) triggerDeviceAlarm(c *gin.Context) {
 
 	// Parse request body
 	var alarmRequest models.AlarmRequest
-	if err := c.ShouldBindJSON(&alarmRequest); err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+	if bindErr := c.ShouldBindJSON(&alarmRequest); bindErr != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"bindError": bindErr.Error()})
 		return
 	}
 

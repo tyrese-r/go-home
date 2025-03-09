@@ -19,8 +19,11 @@ func main() {
 	if err != nil {
 		log.Fatalf("Failed to connect to database: %v", err)
 	}
-	defer db.Close()
-
+	defer func() {
+		if clErr := db.Close(); clErr != nil {
+			log.Printf("clError closing database: %v", clErr)
+		}
+	}()
 	// Initialize repositories
 	deviceRepo := repository.NewDeviceRepository(db)
 
@@ -31,7 +34,12 @@ func main() {
 	h := handlers.New(deviceService)
 
 	// Start HTTP server
-	if err := h.StartServer(cfg.ServerAddress); err != nil {
-		log.Fatalf("Server failed: %v", err)
+	err = h.StartServer(cfg.ServerAddress)
+	if err != nil {
+		log.Printf("Server failed: %v", err)
+		if closeErr := db.Close(); closeErr != nil {
+			log.Printf("Error closing database: %v", closeErr)
+		}
+		return
 	}
 }

@@ -2,6 +2,7 @@ package repository
 
 import (
 	"database/sql"
+	"log"
 	"time"
 
 	"github.com/tyrese-r/go-home/internal/models"
@@ -78,8 +79,11 @@ func (r *DeviceRepositoryImpl) GetAll() ([]*models.Device, error) {
 	if err != nil {
 		return nil, err
 	}
-	defer rows.Close()
-
+	defer func() {
+		if err := rows.Close(); err != nil {
+			log.Printf("Error closing rows: %v", err)
+		}
+	}()
 	var devices []*models.Device
 
 	for rows.Next() {
