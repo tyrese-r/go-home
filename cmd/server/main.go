@@ -2,7 +2,6 @@ package main
 
 import (
 	"log"
-	"os"
 
 	"github.com/tyrese-r/go-home/internal/config"
 	"github.com/tyrese-r/go-home/internal/handlers"
@@ -38,7 +37,9 @@ func main() {
 	err = h.StartServer(cfg.ServerAddress)
 	if err != nil {
 		log.Printf("Server failed: %v", err)
-		db.Close()
-		os.Exit(1)
+		if closeErr := db.Close(); closeErr != nil {
+			log.Printf("Error closing database: %v", closeErr)
+		}
+		return
 	}
 }
