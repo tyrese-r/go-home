@@ -2,6 +2,7 @@ package main
 
 import (
 	"log"
+	"os"
 
 	"github.com/tyrese-r/go-home/internal/config"
 	"github.com/tyrese-r/go-home/internal/handlers"
@@ -34,7 +35,10 @@ func main() {
 	h := handlers.New(deviceService)
 
 	// Start HTTP server
-	if err := h.StartServer(cfg.ServerAddress); err != nil {
-		log.Fatalf("Server failed: %v", err)
+	err = h.StartServer(cfg.ServerAddress)
+	if err != nil {
+		log.Printf("Server failed: %v", err)
+		db.Close()
+		os.Exit(1)
 	}
 }
