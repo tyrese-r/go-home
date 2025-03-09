@@ -35,6 +35,7 @@ func main() {
 
 	// Start HTTP server
 	if err := h.StartServer(cfg.ServerAddress); err != nil {
+		db.Close()
 		log.Fatalf("Server failed: %v", err)
 	}
 }
