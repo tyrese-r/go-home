@@ -9,6 +9,8 @@ RUN go mod download
 
 COPY . .
 
+WORKDIR /app/cmd/server
+
 # Add build arguments for version and build date
 ARG VERSION=0.1.0
 ARG BUILD_DATE
