@@ -19,8 +19,11 @@ func main() {
 	if err != nil {
 		log.Fatalf("Failed to connect to database: %v", err)
 	}
-	defer db.Close()
-
+	defer func() {
+		if err := db.Close(); err != nil {
+			log.Printf("Error closing database: %v", err)
+		}
+	}()
 	// Initialize repositories
 	deviceRepo := repository.NewDeviceRepository(db)
 
