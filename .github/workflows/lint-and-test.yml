@@ -3,28 +3,34 @@ name: Build and Test
 on: 
   push:
     branches: [ "master" ]
-
   pull_request:
     branches: [ "master" ]
-
   workflow_dispatch: 
 
 jobs:
-
   build:
     name: Build & Test
     runs-on: ubuntu-latest
     steps:
-    - name: Checkout Repository
-      uses: actions/checkout@v4
-      with:
-        go-version: '1.21'
-    - name: Install Dependencies
-      run: go mod tidy
+      - name: Checkout Repository
+        uses: actions/checkout@v4
 
-    - name: Build Application
-      run: go build -v ./...
+      - name: Set up Go
+        uses: actions/setup-go@v4
+        with:
+          go-version: '1.21'
 
-    - name: Run Tests
-      run: go test -v ./...
+      - name: Install Dependencies
+        run: go mod tidy
 
+      - name: Build Application
+        run: go build -o app_binary .  # Save as app_binary
+
+      - name: Run Tests
+        run: go test -v ./...
+
+      - name: Upload Build Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: app_binary
+          path: app_binary
